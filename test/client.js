@@ -1,4 +1,5 @@
 var lhttp2= require('..'),
+    _= require('underscore'),
     async= require('async');
 
 var should= require('chai').should(),
@@ -51,17 +52,12 @@ describe('client',function ()
           });
        });
 
-       var expected= [{ key: 'andrea', value: new Buffer('andrea','utf8') },
-                      { key: 'nico', value: new Buffer('nico','utf8') }];
+       var expected= [{ type: 'put', key: 'andrea', value: new Buffer('andrea','utf8') },
+                      { type: 'put', key: 'nico', value: new Buffer('nico','utf8') }];
 
        it('can read all the data', function (done)
        {
-
-          async.forEach(expected,
-          function (data,done)
-          {
-             client.put(data.key,data.value,done);
-          },
+          client.batch(expected,
           function (err)
           {
               if (err) return done(err);
@@ -72,7 +68,7 @@ describe('client',function ()
                     .on('error',done)
                     .on('data',function (data)
                      {
-                         exp.shift().should.eql(data)
+                         _.omit(exp.shift(),['type']).should.eql(data)
                      })
                     .on('end',done);
           });
@@ -99,7 +95,14 @@ describe('client',function ()
                     .on('error',done)
                     .on('data',function (data)
                      {
-                         exp.shift().value.should.eql(data)
+                         try
+                         {
+                           exp.shift().value.should.eql(data)
+                         }
+                         catch (ex)
+                         {
+                           done(ex);
+                         }
                      })
                     .on('end',done);
        });
