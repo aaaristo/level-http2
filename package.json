@@ -29,5 +29,11 @@
     "optimist": "^0.6.1",
     "path-to-regexp": "^1.0.0",
     "underscore": "^1.6.0"
+  },
+  "bin": {
+    "level-http2": "./bin/server.js"
+  },
+  "devDependencies": {
+    "chai": "^1.9.1"
   }
 }
