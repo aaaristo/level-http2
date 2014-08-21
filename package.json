@@ -1,6 +1,6 @@
 {
   "name": "level-http2",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Access a leveldb instance via HTTP2",
   "main": "index.js",
   "scripts": {
@@ -22,8 +22,9 @@
   },
   "homepage": "https://github.com/aaaristo/level-http2",
   "dependencies": {
-    "adm-zip": "^0.4.4",
     "async": "^0.9.0",
+    "binary": "^0.3.0",
+    "binary-stream": "0.0.0",
     "event-stream": "^3.1.7",
     "http2": "^2.7.1",
     "leveldown": "^0.10.2",
