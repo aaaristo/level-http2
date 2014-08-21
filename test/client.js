@@ -62,49 +62,57 @@ describe('client',function ()
           {
               if (err) return done(err);
 
-              var exp= expected.slice();
+              var exp= _.collect(expected,function (e)
+                       {
+                          return _.omit(e,['type']);
+                       }),
+                  kv= [];
             
               client.createReadStream()
                     .on('error',console.log)
                     .on('data',function (data)
                      {
-                         _.omit(exp.shift(),['type']).should.eql(data)
+                         kv.push(data);
                      })
-                    .on('end',done);
+                    .on('end',function ()
+                    {
+                        exp.should.eql(kv);
+                        done();
+                    });
           });
        });
 
        it('can read all keys', function (done)
        {
-              var exp= expected.slice();
+              var exp= _.pluck(expected,'key'), keys= [];
 
               client.createKeyStream()
                     .on('error',console.log)
                     .on('data',function (data)
                      {
-                         exp.shift().key.should.eql(data)
+                        keys.push(data); 
                      })
-                    .on('end',done);
+                    .on('end',function ()
+                    {
+                        exp.should.eql(keys);
+                        done();
+                    });
        });
 
        it('can read all values', function (done)
        {
-              var exp= expected.slice();
+              var exp= _.pluck(expected,'value'), values= [];
 
               client.createValueStream()
                     .on('error',done)
                     .on('data',function (data)
                      {
-                         try
-                         {
-                           exp.shift().value.should.eql(data)
-                         }
-                         catch (ex)
-                         {
-                           done(ex);
-                           process.exit(1);
-                         }
+                         values.push(data);
                      })
-                    .on('end',done);
+                    .on('end',function ()
+                    {
+                        exp.should.eql(values);
+                        done();
+                    });
        });
 });
