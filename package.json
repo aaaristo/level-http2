@@ -1,6 +1,6 @@
 {
   "name": "level-http2",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Access a leveldb instance via HTTP2",
   "main": "index.js",
   "scripts": {
