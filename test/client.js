@@ -55,8 +55,6 @@ describe('client',function ()
        var expected= [{ type: 'put', key: 'andrea', value: new Buffer(_.range(1024).join('andrea'),'utf8') },
                       { type: 'put', key: 'nico', value: new Buffer('nico','utf8') }];
 
-console.log(expected);
-
        it('can read all the data', function (done)
        {
           client.batch(expected,
@@ -67,11 +65,10 @@ console.log(expected);
               var exp= expected.slice();
             
               client.createReadStream()
-                    .on('error',done)
+                    .on('error',console.log)
                     .on('data',function (data)
                      {
-                        console.log(data);
-                      //   _.omit(exp.shift(),['type']).should.eql(data)
+                         _.omit(exp.shift(),['type']).should.eql(data)
                      })
                     .on('end',done);
           });
@@ -82,7 +79,7 @@ console.log(expected);
               var exp= expected.slice();
 
               client.createKeyStream()
-                    .on('error',done)
+                    .on('error',console.log)
                     .on('data',function (data)
                      {
                          exp.shift().key.should.eql(data)
