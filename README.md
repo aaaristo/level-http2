@@ -26,7 +26,7 @@ db.put('mykey','myvalue',function (err,value)
 ```javascript
 var levelHTTP2= require('level-http2');
 
-levelHTTP2.server().listen(8080);
+levelHTTP2.server({ path: './data' }).listen(8080);
 ```
 
 ## Server (cli)
